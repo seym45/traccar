@@ -83,6 +83,9 @@ public class Command extends BaseCommand {
     public static final String KEY_PHONE = "phone";
     public static final String KEY_SERVER = "server";
     public static final String KEY_PORT = "port";
+    public static final String KEY_ENGINE_OFF_INTERVAL = "engine_off_interval";
+    public static final String KEY_ENGINE_ON_INTERVAL = "engine_on_interval";
+    public static final String KEY_HEARTBEAT_INTERVAL = "heartbeat_interval";
 
     @QueryIgnore
     @Override

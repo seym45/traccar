@@ -86,6 +86,11 @@ public class GatorProtocolEncoder extends BaseProtocolEncoder {
             case Command.TYPE_SET_ODOMETER:
                 content.writeShort(command.getInteger(Command.KEY_DATA));
                 return encodeContent(command.getDeviceId(), GatorProtocolDecoder.MSG_OVERSPEED_ALARM, content);
+            case Command.TYPE_POSITION_PERIODIC:
+                content.writeShort(command.getInteger(Command.KEY_ENGINE_ON_INTERVAL));
+                content.writeShort(command.getInteger(Command.KEY_ENGINE_OFF_INTERVAL));
+                content.writeByte(command.getInteger(Command.KEY_HEARTBEAT_INTERVAL));
+                return encodeContent(command.getDeviceId(), GatorProtocolDecoder.MSG_TIMING_INTERVAL, content);
             default:
                 return null;
         }
