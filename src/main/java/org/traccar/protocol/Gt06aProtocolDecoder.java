@@ -29,6 +29,7 @@ import org.traccar.model.Position;
 import org.traccar.session.DeviceSession;
 
 import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -305,7 +306,7 @@ public class Gt06aProtocolDecoder extends BaseProtocolDecoder {
             position.set(Position.KEY_BATTERY, buf.readUnsignedShort() * 0.01);
             position.set(Position.KEY_RSSI, buf.readUnsignedByte());
             buf.readUnsignedByte(); // external voltage
-            buf.readUnsignedByte(); // language
+            buf.readUnsignedShort(); // language
             sendResponse(channel, false, type, buf.getShort(buf.writerIndex() - 6), null);
 
             return position;
@@ -319,11 +320,27 @@ public class Gt06aProtocolDecoder extends BaseProtocolDecoder {
 
                 short alarmExtension = buf.readUnsignedByte();
                 position.set(Position.KEY_ALARM, decodeAlarm(alarmExtension));
-                buf.readUnsignedByte(); // language
+                buf.readUnsignedShort(); // language
             } else {
                 decodeLbs(position, buf, type, false);
             }
             position.set("BAT_EXT", buf.readShort() / 100.0);
+        } else if (type == MSG_STRING) {
+
+            getLastLocation(position, null);
+
+            int commandLength = buf.readUnsignedByte();
+
+            if (commandLength > 0) {
+                buf.readUnsignedInt(); // server flag (reserved)
+                String data = buf.readSlice(commandLength - 4).toString(StandardCharsets.US_ASCII);
+                if (data.startsWith("<ICCID:")) {
+                    position.set(Position.KEY_ICCID, data.substring(7, 27));
+                } else {
+                    position.set(Position.KEY_RESULT, data);
+                }
+            }
+            buf.readUnsignedShort(); // language
         } else {
 
             if (dataLength > 0) {
