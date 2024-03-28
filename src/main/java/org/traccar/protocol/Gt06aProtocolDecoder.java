@@ -325,6 +325,10 @@ public class Gt06aProtocolDecoder extends BaseProtocolDecoder {
                 decodeLbs(position, buf, type, false);
             }
             position.set("BAT_EXT", buf.readShort() / 100.0);
+            try {
+                position.set("ODOMETER_M", buf.readInt());
+            } catch (IndexOutOfBoundsException e) {
+            }
         } else if (type == MSG_STRING) {
 
             getLastLocation(position, null);

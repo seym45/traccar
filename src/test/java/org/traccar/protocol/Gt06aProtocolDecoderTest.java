@@ -26,12 +26,10 @@ public class Gt06aProtocolDecoderTest extends ProtocolTest {
         verifyAttribute(decoder, binary(
                         "78782112170b1e021537cd027c56850c2b946700d47a01cc000000000000050b12e68f7c0d0a"),
                 "BAT_EXT", 12.91);
-
-        verifyAttribute(decoder, binary(
-                        "78782716170b1e031b2acd027c58b00c2b94520014ef0901cc00000000000050063c02020191005afd7c0d0a"),
-                Position.KEY_TYPE, String.valueOf(0x16));
-        verifyAttribute(decoder, binary("78782716170b1e031b2acd027c58b00c2b94520014ef0901cc00000000000050063c02020191005afd7c0d0a"),
-                "BAT_EXT", 4.01);
+        verifyAttribute(decoder, binary("78782512180301070e03cf002a15d50b22ec4900d47f01f61000000000000514000fe26c0036964c0d0a"),
+                "BAT_EXT", 13.0);
+        verifyAttribute(decoder, binary("78782512180301070e03cf002a15d50b22ec4900d47f01f61000000000000514000fe26c0036964c0d0a"),
+                "ODOMETER_M", 1041004);
     }
 
 }
